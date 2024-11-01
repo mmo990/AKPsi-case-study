@@ -19,8 +19,8 @@ def create_task():
         'taskName': data['taskName'],
         'description': data.get('description'),
         'due_date': data.get('due_date'),
-        'priority': data.get('priority'),
-        'category': data.get('category')
+        'category': data.get('category'),
+        'priority': data.get('priority')
     }
     tasks.append(new_task)
     task_id_counter += 1
@@ -55,6 +55,22 @@ def delete_task(id):
     global tasks
     tasks = [task for task in tasks if task['id'] != id]
     return '', 204
+
+@app.route('/tasks/month', methods=['GET'])
+def get_tasks_for_month():
+    year = request.args.get('year', type=int)
+    month = request.args.get('month', type=int)
+    if not year or not month:
+        abort(400, description="Year and month query parameters are required")
+    
+    filtered_tasks = []
+    for task in tasks:
+        if task['due_date']:
+            due_date = datetime.fromisoformat(task['due_date'])
+            if due_date.year == year and due_date.month == month:
+                filtered_tasks.append(task)
+    
+    return jsonify(filtered_tasks)
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5001, debug=True)
