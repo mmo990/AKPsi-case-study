@@ -15,7 +15,7 @@ const events = [
   { date: 22, text: 'Work On Case Study', color: 'blue' },
   { date: 23, text: 'Brother Interview', color: 'blue' },
   { date: 23, text: 'Grocery Shopping', color: 'orange' },
-  { date: 25, text: 'Work On Case Study', color: 'blue' },
+  { date: 25, text: 'Work on Case Study', color: 'blue' },
   { date: 25, text: 'Do Laundry', color: 'orange' },
   { date: 28, text: 'Brother Interview', color: 'blue' },
   { date: 28, text: 'Wash Dishes', color: 'orange' },
@@ -23,12 +23,21 @@ const events = [
   { date: 30, text: 'Walk the Dog', color: 'orange' },
 ];
 
+const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
 const Calendar = () => {
   const daysInMonth = Array.from({ length: 30 }, (_, i) => i + 1);
 
   return (
     <div className="calendar">
       <div className="header">November, 2024</div>
+      <div className="weekdays">
+        {daysOfWeek.map((day, index) => (
+          <div key={index} className="weekday">
+            {day}
+          </div>
+        ))}
+      </div>
       <div className="grid">
         {daysInMonth.map(day => (
           <div key={day} className="day">
@@ -61,4 +70,4 @@ function App() {
   );
 }
 
-export default App;
+export default Calendar;
