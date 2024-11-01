@@ -36,3 +36,53 @@
     transform: rotate(360deg);
   }
 }
+.App {
+  text-align: center;
+}
+
+.calendar {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+}
+
+.day {
+  border: 1px solid #ddd;
+  padding: 10px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.date {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.events {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.event {
+  padding: 5px;
+  border-radius: 5px;
+  color: white;
+  font-size: 0.9em;
+  text-align: center;
+}
