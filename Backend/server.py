@@ -87,5 +87,20 @@ def get_tasks_for_month():
     
     return jsonify(filtered_tasks)
 
+@app.route('/tasks/today', methods=['GET'])
+def get_tasks_for_today():
+    today = datetime.today().date()
+    filtered_tasks = []
+    for task in tasks:
+        if task['due_date']:
+            try:
+                due_date = datetime.fromisoformat(task['due_date']).date()
+                if due_date == today:
+                    filtered_tasks.append(task)
+            except ValueError:
+                continue
+    
+    return jsonify(filtered_tasks)
+
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5001, debug=True)
