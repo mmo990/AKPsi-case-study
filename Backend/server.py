@@ -22,7 +22,7 @@ def create_task():
             abort(400, description="Invalid date format. Use YYYY-MM-DD.")
     new_task = {
         'id': task_id_counter,
-        'title': data['title'],
+        'taskName': data['taskName'],
         'description': data.get('description'),
         'due_date': due_date,
         'category': data.get('category'),
@@ -55,7 +55,7 @@ def update_task(id):
             datetime.fromisoformat(due_date)
         except ValueError:
             abort(400, description="Invalid date format. Use YYYY-MM-DD.")
-    task['title'] = data['title']
+    task['taskName'] = data['taskName']
     task['description'] = data.get('description')
     task['due_date'] = due_date
     task['priority'] = data.get('priority')
