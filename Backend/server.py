@@ -14,11 +14,17 @@ task_id_counter = 1
 def create_task():
     global task_id_counter
     data = request.get_json()
+    due_date = data.get('due_date')
+    if due_date:
+        try:
+            datetime.fromisoformat(due_date)
+        except ValueError:
+            abort(400, description="Invalid date format. Use YYYY-MM-DD.")
     new_task = {
         'id': task_id_counter,
-        'taskName': data['taskName'],
+        'title': data['title'],
         'description': data.get('description'),
-        'due_date': data.get('due_date'),
+        'due_date': due_date,
         'category': data.get('category'),
         'priority': data.get('priority')
     }
@@ -43,9 +49,15 @@ def update_task(id):
     if task is None:
         abort(404)
     data = request.get_json()
-    task['taskName'] = data['taskName']
+    due_date = data.get('due_date')
+    if due_date:
+        try:
+            datetime.fromisoformat(due_date)
+        except ValueError:
+            abort(400, description="Invalid date format. Use YYYY-MM-DD.")
+    task['title'] = data['title']
     task['description'] = data.get('description')
-    task['due_date'] = data.get('due_date')
+    task['due_date'] = due_date
     task['priority'] = data.get('priority')
     task['category'] = data.get('category')
     return jsonify(task)
@@ -66,9 +78,12 @@ def get_tasks_for_month():
     filtered_tasks = []
     for task in tasks:
         if task['due_date']:
-            due_date = datetime.fromisoformat(task['due_date'])
-            if due_date.year == year and due_date.month == month:
-                filtered_tasks.append(task)
+            try:
+                due_date = datetime.fromisoformat(task['due_date'])
+                if due_date.year == year and due_date.month == month:
+                    filtered_tasks.append(task)
+            except ValueError:
+                continue
     
     return jsonify(filtered_tasks)
 
