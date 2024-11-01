@@ -16,11 +16,11 @@ def create_task():
     data = request.get_json()
     new_task = {
         'id': task_id_counter,
-        'title': data['title'],
+        'taskName': data['taskName'],
         'description': data.get('description'),
         'due_date': data.get('due_date'),
-        'category': data.get('category'),
-        'priority': data.get('priority')
+        'priority': data.get('priority'),
+        'category': data.get('category')
     }
     tasks.append(new_task)
     task_id_counter += 1
@@ -43,11 +43,11 @@ def update_task(id):
     if task is None:
         abort(404)
     data = request.get_json()
-    task['title'] = data['title']
+    task['taskName'] = data['taskName']
     task['description'] = data.get('description')
     task['due_date'] = data.get('due_date')
-    task['category'] = data.get('category')
     task['priority'] = data.get('priority')
+    task['category'] = data.get('category')
     return jsonify(task)
 
 @app.route('/tasks/<int:id>', methods=['DELETE'])
