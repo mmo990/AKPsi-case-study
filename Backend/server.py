@@ -1,27 +1,60 @@
-#from flask import Flask, render_template, request
-import pandas as pd
-import requests as rq
-
-from flask import Flask, abort, current_app, request, render_template
-import json
+from flask import Flask, request, jsonify, abort
 from flask_cors import CORS
+from datetime import datetime
 
 app = Flask(__name__)
 CORS(app)
 
+# In-memory storage for tasks
+tasks = []
+task_id_counter = 1
 
-@app.route('/', methods=['POST'])
-def stock_tracker():
+# Routes for CRUD operations
+@app.route('/tasks', methods=['POST'])
+def create_task():
+    global task_id_counter
+    data = request.get_json()
+    new_task = {
+        'id': task_id_counter,
+        'title': data['title'],
+        'description': data.get('description'),
+        'due_date': data.get('due_date'),
+        'category': data.get('category'),
+        'priority': data.get('priority')
+    }
+    tasks.append(new_task)
+    task_id_counter += 1
+    return jsonify(new_task), 201
 
-    json_data = json.dumps(0)
-    response = app.response_class(
-        response=json_data,
-        status=200,
-        mimetype='application/json'
-    )
+@app.route('/tasks', methods=['GET'])
+def get_tasks():
+    return jsonify(tasks)
 
-    return response
+@app.route('/tasks/<int:id>', methods=['GET'])
+def get_task(id):
+    task = next((task for task in tasks if task['id'] == id), None)
+    if task is None:
+        abort(404)
+    return jsonify(task)
 
+@app.route('/tasks/<int:id>', methods=['PUT'])
+def update_task(id):
+    task = next((task for task in tasks if task['id'] == id), None)
+    if task is None:
+        abort(404)
+    data = request.get_json()
+    task['title'] = data['title']
+    task['description'] = data.get('description')
+    task['due_date'] = data.get('due_date')
+    task['category'] = data.get('category')
+    task['priority'] = data.get('priority')
+    return jsonify(task)
+
+@app.route('/tasks/<int:id>', methods=['DELETE'])
+def delete_task(id):
+    global tasks
+    tasks = [task for task in tasks if task['id'] != id]
+    return '', 204
 
 if __name__ == '__main__':
-    app.run(host = '127.0.0.1', port = 5001, debug = True)
+    app.run(host='127.0.0.1', port=5001, debug=True)
