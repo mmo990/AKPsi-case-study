@@ -1,22 +1,23 @@
 from flask import Flask, request, jsonify, abort
 from flask_cors import CORS
 from datetime import datetime
+from pymongo import MongoClient
+from bson.objectid import ObjectId, InvalidId
 
 app = Flask(__name__)
 CORS(app)
 
-# In-memory storage for tasks, categories, and priorities
-tasks = []
-categories = []
-priorities = []
-task_id_counter = 1
-category_id_counter = 1
-priority_id_counter = 1
+
+# MongoDB connection
+client = MongoClient('mongodb+srv://matbbiji:123@taskmanager.frv2k.mongodb.net/?retryWrites=true&w=majority&appName=TaskManager')
+db = client['task_manager']
+tasks_collection = db['tasks']
+categories_collection = db['categories']
+priorities_collection = db['priorities']
 
 # Routes for CRUD operations for tasks
 @app.route('/tasks', methods=['POST'])
 def create_task():
-    global task_id_counter
     data = request.get_json()
     due_date = data.get('due_date')
     if due_date:
@@ -25,33 +26,40 @@ def create_task():
         except ValueError:
             abort(400, description="Invalid date format. Use YYYY-MM-DD.")
     new_task = {
-        'id': task_id_counter,
         'taskName': data['taskName'],
         'description': data.get('description'),
         'due_date': due_date,
         'category': data.get('category'),
         'priority': data.get('priority')
     }
-    tasks.append(new_task)
-    task_id_counter += 1
+    result = tasks_collection.insert_one(new_task)
+    new_task['_id'] = str(result.inserted_id)
     return jsonify(new_task), 201
 
 @app.route('/tasks', methods=['GET'])
 def get_tasks():
+    tasks = list(tasks_collection.find())
+    for task in tasks:
+        task['_id'] = str(task['_id'])
     return jsonify(tasks)
 
-@app.route('/tasks/<int:id>', methods=['GET'])
+@app.route('/tasks/<id>', methods=['GET'])
 def get_task(id):
-    task = next((task for task in tasks if task['id'] == id), None)
+    try:
+        task = tasks_collection.find_one({'_id': ObjectId(id)})
+    except InvalidId:
+        abort(400, description="Invalid task ID format.")
     if task is None:
         abort(404)
+    task['_id'] = str(task['_id'])
     return jsonify(task)
 
-@app.route('/tasks/<int:id>', methods=['PUT'])
+@app.route('/tasks/<id>', methods=['PUT'])
 def update_task(id):
-    task = next((task for task in tasks if task['id'] == id), None)
-    if task is None:
-        abort(404)
+    try:
+        ObjectId(id)
+    except InvalidId:
+        abort(400, description="Invalid task ID format.")
     data = request.get_json()
     due_date = data.get('due_date')
     if due_date:
@@ -59,17 +67,28 @@ def update_task(id):
             datetime.fromisoformat(due_date)
         except ValueError:
             abort(400, description="Invalid date format. Use YYYY-MM-DD.")
-    task['taskName'] = data['taskName']
-    task['description'] = data.get('description')
-    task['due_date'] = due_date
-    task['priority'] = data.get('priority')
-    task['category'] = data.get('category')
-    return jsonify(task)
+    updated_task = {
+        'taskName': data['taskName'],
+        'description': data.get('description'),
+        'due_date': due_date,
+        'category': data.get('category'),
+        'priority': data.get('priority')
+    }
+    result = tasks_collection.update_one({'_id': ObjectId(id)}, {'$set': updated_task})
+    if result.matched_count == 0:
+        abort(404)
+    updated_task['_id'] = id
+    return jsonify(updated_task)
 
-@app.route('/tasks/<int:id>', methods=['DELETE'])
+@app.route('/tasks/<id>', methods=['DELETE'])
 def delete_task(id):
-    global tasks
-    tasks = [task for task in tasks if task['id'] != id]
+    try:
+        ObjectId(id)
+    except InvalidId:
+        abort(400, description="Invalid task ID format.")
+    result = tasks_collection.delete_one({'_id': ObjectId(id)})
+    if result.deleted_count == 0:
+        abort(404)
     return '', 204
 
 @app.route('/tasks/month', methods=['GET'])
@@ -80,11 +99,13 @@ def get_tasks_for_month():
         abort(400, description="Year and month query parameters are required")
     
     filtered_tasks = []
+    tasks = tasks_collection.find()
     for task in tasks:
         if task['due_date']:
             try:
                 due_date = datetime.fromisoformat(task['due_date'])
                 if due_date.year == year and due_date.month == month:
+                    task['_id'] = str(task['_id'])
                     filtered_tasks.append(task)
             except ValueError:
                 continue
@@ -95,11 +116,13 @@ def get_tasks_for_month():
 def get_tasks_for_today():
     today = datetime.today().date()
     filtered_tasks = []
+    tasks = tasks_collection.find()
     for task in tasks:
         if task['due_date']:
             try:
                 due_date = datetime.fromisoformat(task['due_date']).date()
                 if due_date == today:
+                    task['_id'] = str(task['_id'])
                     filtered_tasks.append(task)
             except ValueError:
                 continue
@@ -109,79 +132,113 @@ def get_tasks_for_today():
 # Routes for CRUD operations for categories
 @app.route('/categories', methods=['POST'])
 def create_category():
-    global category_id_counter
     data = request.get_json()
     new_category = {
-        'id': category_id_counter,
         'name': data['name']
     }
-    categories.append(new_category)
-    category_id_counter += 1
+    result = categories_collection.insert_one(new_category)
+    new_category['_id'] = str(result.inserted_id)
     return jsonify(new_category), 201
 
 @app.route('/categories', methods=['GET'])
 def get_categories():
+    categories = list(categories_collection.find())
+    for category in categories:
+        category['_id'] = str(category['_id'])
     return jsonify(categories)
 
-@app.route('/categories/<int:id>', methods=['GET'])
+@app.route('/categories/<id>', methods=['GET'])
 def get_category(id):
-    category = next((category for category in categories if category['id'] == id), None)
+    try:
+        category = categories_collection.find_one({'_id': ObjectId(id)})
+    except InvalidId:
+        abort(400, description="Invalid category ID format.")
     if category is None:
         abort(404)
+    category['_id'] = str(category['_id'])
     return jsonify(category)
 
-@app.route('/categories/<int:id>', methods=['PUT'])
+@app.route('/categories/<id>', methods=['PUT'])
 def update_category(id):
-    category = next((category for category in categories if category['id'] == id), None)
-    if category is None:
-        abort(404)
+    try:
+        ObjectId(id)
+    except InvalidId:
+        abort(400, description="Invalid category ID format.")
     data = request.get_json()
-    category['name'] = data['name']
-    return jsonify(category)
+    updated_category = {
+        'name': data['name']
+    }
+    result = categories_collection.update_one({'_id': ObjectId(id)}, {'$set': updated_category})
+    if result.matched_count == 0:
+        abort(404)
+    updated_category['_id'] = id
+    return jsonify(updated_category)
 
-@app.route('/categories/<int:id>', methods=['DELETE'])
+@app.route('/categories/<id>', methods=['DELETE'])
 def delete_category(id):
-    global categories
-    categories = [category for category in categories if category['id'] != id]
+    try:
+        ObjectId(id)
+    except InvalidId:
+        abort(400, description="Invalid category ID format.")
+    result = categories_collection.delete_one({'_id': ObjectId(id)})
+    if result.deleted_count == 0:
+        abort(404)
     return '', 204
 
 # Routes for CRUD operations for priorities
 @app.route('/priorities', methods=['POST'])
 def create_priority():
-    global priority_id_counter
     data = request.get_json()
     new_priority = {
-        'id': priority_id_counter,
         'name': data['name']
     }
-    priorities.append(new_priority)
-    priority_id_counter += 1
+    result = priorities_collection.insert_one(new_priority)
+    new_priority['_id'] = str(result.inserted_id)
     return jsonify(new_priority), 201
 
 @app.route('/priorities', methods=['GET'])
 def get_priorities():
+    priorities = list(priorities_collection.find())
+    for priority in priorities:
+        priority['_id'] = str(priority['_id'])
     return jsonify(priorities)
 
-@app.route('/priorities/<int:id>', methods=['GET'])
+@app.route('/priorities/<id>', methods=['GET'])
 def get_priority(id):
-    priority = next((priority for priority in priorities if priority['id'] == id), None)
+    try:
+        priority = priorities_collection.find_one({'_id': ObjectId(id)})
+    except InvalidId:
+        abort(400, description="Invalid priority ID format.")
     if priority is None:
         abort(404)
+    priority['_id'] = str(priority['_id'])
     return jsonify(priority)
 
-@app.route('/priorities/<int:id>', methods=['PUT'])
+@app.route('/priorities/<id>', methods=['PUT'])
 def update_priority(id):
-    priority = next((priority for priority in priorities if priority['id'] == id), None)
-    if priority is None:
-        abort(404)
+    try:
+        ObjectId(id)
+    except InvalidId:
+        abort(400, description="Invalid priority ID format.")
     data = request.get_json()
-    priority['name'] = data['name']
-    return jsonify(priority)
+    updated_priority = {
+        'name': data['name']
+    }
+    result = priorities_collection.update_one({'_id': ObjectId(id)}, {'$set': updated_priority})
+    if result.matched_count == 0:
+        abort(404)
+    updated_priority['_id'] = id
+    return jsonify(updated_priority)
 
-@app.route('/priorities/<int:id>', methods=['DELETE'])
+@app.route('/priorities/<id>', methods=['DELETE'])
 def delete_priority(id):
-    global priorities
-    priorities = [priority for priority in priorities if priority['id'] != id]
+    try:
+        ObjectId(id)
+    except InvalidId:
+        abort(400, description="Invalid priority ID format.")
+    result = priorities_collection.delete_one({'_id': ObjectId(id)})
+    if result.deleted_count == 0:
+        abort(404)
     return '', 204
 
 if __name__ == '__main__':
