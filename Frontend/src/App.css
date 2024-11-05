@@ -148,3 +148,53 @@ body {
   background-color: #f0f0f0;
   border-radius: 5px;
 }
+/* Centering login container */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+  background-color: #4a90e2; /* Example background color */
+  color: white; /* Text color */
+  padding: 20px;
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Title Styling */
+.login-title {
+  margin-bottom: 20px;
+  font-size: 2em; /* Larger font size */
+}
+
+/* Form styling */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  width: 300px; /* Fixed width for form */
+}
+
+/* Input styles */
+.login-input {
+  padding: 10px;
+  margin: 10px 0; /* Space between inputs */
+  border: none;
+  border-radius: 5px;
+  outline: none;
+}
+
+/* Button styles */
+.login-button {
+  padding: 10px;
+  background-color: #5cb85c; /* Button background color */
+  color: white; /* Button text color */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.login-button:hover {
+  background-color: #4cae4c; /* Darker shade on hover */
+}
