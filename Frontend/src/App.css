@@ -108,6 +108,57 @@ body {
   margin-top: 20px;
 }
 
+/* Login Container */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+  background-color: #4a90e2; /* Example background color */
+  color: white; /* Text color */
+  padding: 20px;
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Title Styling */
+.login-title {
+  margin-bottom: 20px;
+  font-size: 2em; /* Larger font size */
+}
+
+/* Form styling */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  width: 300px; /* Fixed width for form */
+}
+
+/* Input styles */
+.login-input {
+  padding: 10px;
+  margin: 10px 0; /* Space between inputs */
+  border: 1px solid #ddd; /* Added border for consistency */
+  border-radius: 5px;
+  outline: none;
+}
+
+/* Button styles */
+.login-button {
+  padding: 10px;
+  background-color: #5cb85c; /* Button background color */
+  color: white; /* Button text color */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.login-button:hover {
+  background-color: #4cae4c; /* Darker shade on hover */
+}
+
 /* Calendar styles */
 .calendar {
   flex: 1;
@@ -148,53 +199,270 @@ body {
   background-color: #f0f0f0;
   border-radius: 5px;
 }
-/* Centering login container */
-.login-container {
+
+
+.menu, .category-list, .priority-list {
+  list-style: none;
+  margin-bottom: 10px 0;
+  padding: 0;
+  font-size: 0.9em;
+ }
+ 
+ 
+ .menu, .category-list li, .priority-list li {
+  padding: 5px 0;
+  font-size: 0.9em;
+  color: #555;
+ }
+ 
+ 
+ .category-item {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh; /* Full viewport height */
-  background-color: #4a90e2; /* Example background color */
-  color: white; /* Text color */
+  justify-content: space-between;
+  align-items: left;
+ }
+ 
+ 
+ .category-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 10px;
+ }
+ 
+ 
+ 
+ 
+ .work {
+  background-color: #84a9ac;
+ }
+ 
+ 
+ .personal {
+  background-color: #f5a623;
+ }
+ 
+ 
+ 
+ 
+ .category {
+  display: flex;
+  justify-content: space-between;
+  align-items: left;
+ }
+ 
+ 
+ .badge {
+  background-color: #e0e0e0;
+  color: #333;
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 0.8em;
+  align-items: left;
+ }
+ 
+ 
+ .main {
+  flex: 1;
   padding: 20px;
-  border-radius: 10px; /* Rounded corners */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-}
-
-/* Title Styling */
-.login-title {
+  background-color: #f8f8f8;
+ }
+ 
+ 
+ .title {
+  font-size: 1.5em;
   margin-bottom: 20px;
-  font-size: 2em; /* Larger font size */
-}
-
-/* Form styling */
-.login-form {
+ }
+ 
+ 
+ .main h2 {
+  margin-bottom: 20px;
+ }
+ 
+ 
+ .task-form input,
+ .task-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+ }
+ 
+ 
+ .task-options {
+  display: flex;
+  gap: 20px;
+ }
+ 
+ 
+ .due-date,
+ .dropdown {
   display: flex;
   flex-direction: column;
-  width: 300px; /* Fixed width for form */
-}
-
-/* Input styles */
-.login-input {
+ }
+ 
+ 
+ .due-date button,
+ .dropdown select {
   padding: 10px;
-  margin: 10px 0; /* Space between inputs */
-  border: none;
-  border-radius: 5px;
-  outline: none;
-}
-
-/* Button styles */
-.login-button {
-  padding: 10px;
-  background-color: #5cb85c; /* Button background color */
-  color: white; /* Button text color */
-  border: none;
-  border-radius: 5px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-top: 10px;
+  background-color: #fff;
   cursor: pointer;
-  transition: background-color 0.3s ease; /* Smooth transition */
-}
-
-.login-button:hover {
-  background-color: #4cae4c; /* Darker shade on hover */
-}
+ }
+ 
+ 
+ .due-date button:hover,
+ .dropdown select:hover {
+  background-color: #f0f0f0;
+ }
+ 
+ 
+ .submit-btn {
+  font-size: 1em;
+  background: #f6f6f6;
+  color: rgb(0, 0, 0);
+  border: none;
+  padding: 10px;
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  cursor: pointer;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+ }
+ 
+ 
+ 
+ .add-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+  background-color: #f8f8f8;
+  padding: 20px;
+ }
+ 
+ 
+ .add-page h2 {
+  font-size: 2em;
+  font-weight: bold;
+  margin-bottom: 20px;
+ }
+ 
+ 
+ .today-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+ }
+ 
+ 
+ .illustration {
+  width: 300px;
+  height: auto;
+  margin-bottom: 20px;
+ }
+ 
+ 
+ .today-content p {
+  font-size: 1.2em;
+  color: #777;
+ }
+ 
+ 
+ .add-task-button {
+  font-size: 2em;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+ }
+ 
+ 
+ .menu-link {
+  text-decoration: none;
+  color: inherit;
+  font-size: 1em;
+  cursor: pointer;
+ }
+ 
+ 
+ .menu-link:hover {
+  color: #333; /* Optional hover effect */
+ }
+ 
+ 
+ .inbox-page {
+  padding: 20px;
+ }
+ 
+ 
+ .inbox-page h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-bottom: 20px;
+ }
+ 
+ 
+ .task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+ }
+ 
+ 
+ .task-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #f8f8f8;
+ }
+ 
+ 
+ .task-item input[type="checkbox"] {
+  margin-right: 10px;
+ }
+ 
+ 
+ .task-details {
+  display: flex;
+  flex-direction: column;
+ }
+ 
+ 
+ .task-name {
+  font-weight: bold;
+ }
+ 
+ 
+ .task-category {
+  font-size: 0.9em;
+  color: #666;
+ }
+ 
+ 
+ .priority1 {
+  background-color: #fff9c4; /* Light yellow for Priority 1 */
+ }
+ 
+ 
+ .priority2 {
+  background-color: #e0f7fa; /* Light blue for Priority 2 */
+ }
+ 
