@@ -1,333 +1,150 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-.App {
-  text-align: center;
-}
-
-.calendar {
-  max-width: 600px;
-  margin: auto;
-  padding: 20px;
-  font-family: Arial, sans-serif;
-}
-
-.header {
-  font-size: 1.5em;
-  margin-bottom: 20px;
-  color: #333;
-}
-
-.weekdays {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 10px;
-  font-weight: bold;
-  color: #555;
-  margin-bottom: 10px;
-}
-
-.weekday {
-  text-align: center;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 10px;
-}
-
-.day {
-  border: 1px solid #ddd;
-  padding: 10px;
-  height: 100px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.date {
-  font-weight: bold;
-  font-size: 1.2em;
-}
-
-.events {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.event {
-  padding: 5px;
-  border-radius: 5px;
-  color: white;
-  font-size: 0.9em;
-  text-align: center;
-}
+/* Reset and Global Styles */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: Arial, sans-serif;
- }
- 
- 
- html, body, #root {
+}
+
+html, body, #root {
   height: 100vh;
   width: 100vw;
-  margin: 0;
   overflow: hidden;
- }
- 
- 
- body {
+}
+
+body {
   display: flex;
   background-color: #f5f5f5;
- }
- 
- 
- .app-container {
+}
+
+/* Main App container */
+.app-container {
   display: flex;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
- }
- 
- 
- .sidebar {
-  width: 300px;
-  min-width: 300px;
-  height: 100vh;
-  background: #fff;
-  padding: 20px;
+}
+
+/* Sidebar styling */
+.sidebar {
+  width: 250px;
+  background-color: #ffffff;
   border-right: 1px solid #e0e0e0;
-  overflow-y: auto;
- }
- 
- 
- .logo {
+  padding: 20px;
+  text-align: left;
+}
+
+.logo {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
- }
- 
- 
- .logo-icon {
-  font-size: 1.8em;
-  margin-right: 10px;
- }
- 
- 
- h2, h3 {
-  color: #333;
-  font-size: medium;
- }
- 
- 
- .menu, .category-list, .priority-list {
-  list-style: none;
-  margin-bottom: 10px 0;
+  gap: 10px;
+}
+
+.logo h2 {
+  font-size: 1.5em;
+  margin: 0;
+}
+
+.menu, .category-list, .priority-list {
+  list-style-type: none;
   padding: 0;
-  font-size: 0.9em;
- }
- 
- 
- .menu, .category-list li, .priority-list li {
-  padding: 5px 0;
-  font-size: 0.9em;
-  color: #555;
- }
- 
- 
- .category-item {
+  margin: 10px 0;
+}
+
+.menu li, .category-list li, .priority-list li {
+  margin-bottom: 10px;
+}
+
+/* Menu Buttons */
+.menu-button {
+  width: 100%;
+  padding: 10px;
+  font-size: 1em;
+  text-align: left;
+  background: none;
+  border: none;
+  color: #333;
+  cursor: pointer;
+}
+
+.menu-button:hover {
+  background-color: #f0f0f0;
+  border-radius: 5px;
+}
+
+/* Categories and Priority Section */
+.category-item, .priority-list li {
   display: flex;
-  justify-content: space-between;
-  align-items: left;
- }
- 
- 
- .category-color {
-  width: 12px;
-  height: 12px;
+  align-items: center;
+  gap: 5px;
+}
+
+.category-color.work {
+  width: 10px;
+  height: 10px;
+  background-color: orange;
   border-radius: 50%;
   display: inline-block;
-  margin-right: 10px;
- }
- 
- 
- 
- 
- .work {
-  background-color: #84a9ac;
- }
- 
- 
- .personal {
-  background-color: #f5a623;
- }
- 
- 
- 
- 
- .category {
-  display: flex;
-  justify-content: space-between;
-  align-items: left;
- }
- 
- 
- .badge {
-  background-color: #e0e0e0;
-  color: #333;
+}
+
+.category-color.personal {
+  width: 10px;
+  height: 10px;
+  background-color: blue;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.badge {
+  background-color: #ddd;
+  padding: 3px 6px;
   border-radius: 12px;
-  padding: 2px 8px;
   font-size: 0.8em;
-  align-items: left;
- }
- 
- 
- .main {
+  color: #333;
+  margin-left: auto;
+}
+
+.dropdown-heading {
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+/* Calendar styles */
+.calendar {
   flex: 1;
   padding: 20px;
-  background-color: #f8f8f8;
- }
- 
- 
- .title {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  text-align: center;
   font-size: 1.5em;
-  margin-bottom: 20px;
- }
- 
- 
- .main h2 {
-  margin-bottom: 20px;
- }
- 
- 
- .task-form input,
- .task-form textarea {
-  width: 100%;
+  margin-bottom: 10px;
+}
+
+.weekdays, .grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.weekday, .day {
   padding: 10px;
-  margin-bottom: 20px;
+  text-align: center;
   border: 1px solid #ddd;
-  border-radius: 8px;
- }
- 
- 
- .task-options {
-  display: flex;
-  gap: 20px;
- }
- 
- 
- .due-date,
- .dropdown {
-  display: flex;
-  flex-direction: column;
- }
- 
- 
- .due-date button,
- .dropdown select {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  margin-top: 10px;
-  background-color: #fff;
-  cursor: pointer;
- }
- 
- 
- .due-date button:hover,
- .dropdown select:hover {
+}
+
+/* Event styling */
+.event {
+  padding: 5px;
+  color: #fff;
+  margin-top: 5px;
+  border-radius: 4px;
+}
+
+/* Sidebar button hover effect */
+.menu-link:hover {
+  color: #333;
   background-color: #f0f0f0;
- }
- 
- 
- .submit-btn {
-  font-size: 2em;
-  background: #4CAF50;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 50%;
-  cursor: pointer;
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
- }
-/* Login.css */
-.login-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background-color: #f0f2f5;
-}
-
-.login-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-  padding: 2em;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.login-form input {
-  padding: 0.5em;
-  font-size: 1em;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.login-button {
-  padding: 0.5em;
-  font-size: 1em;
-  color: white;
-  background-color: #007bff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.login-button:hover {
-  background-color: #0056b3;
+  border-radius: 5px;
 }
