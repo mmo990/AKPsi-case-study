@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css'
 
 function NewTask({ addTask }) {
   const [name, setName] = useState('');
@@ -8,6 +10,7 @@ function NewTask({ addTask }) {
   const [category, setCategory] = useState('Work');
   const [date, setDate] = useState(new Date().getDate()); // Default to today's date
   const navigate = useNavigate();
+  const [dueDate, setDueDate] = useState(null)
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -41,9 +44,13 @@ function NewTask({ addTask }) {
         <div className="task-options">
           <div className="due-date">
             <label>Due Date</label>
-            <button type="button" onClick={() => setDate(new Date().getDate())}>Today</button>
-            <button type="button" onClick={() => setDate(new Date().getDate() + 1)}>Tomorrow</button>
-            <button type="button" onClick={() => setDate(new Date().getDate() + 7)}>Next Week</button>
+            <DatePicker
+              selected={dueDate}
+              onChange={(date) => setDueDate(date)}
+              placeholderText="Select due date"
+              className="date-picker"
+              dateFormat="MM/dd/yyyy"
+            />
           </div>
           <div className="dropdown">
             <label>Priority</label>
