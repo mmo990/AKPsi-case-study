@@ -11,6 +11,7 @@ function App() {
     { date: 2, text: 'Do Laundry', color: 'orange' },
     { date: 4, text: 'Work On Case Study', color: 'blue' },
     // ... other initial tasks
+    
   ]);
 
   // Function to add a new task
@@ -37,5 +38,7 @@ function App() {
     </div>
   );
 }
+
+
 
 export default App;
