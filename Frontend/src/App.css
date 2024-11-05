@@ -491,12 +491,10 @@ body {
   border-radius: 8px;
   background-color: #f8f8f8;
  }
- 
- 
+  
  .task-item input[type="checkbox"] {
   margin-right: 10px;
  }
- 
  
  .task-details {
   display: flex;
