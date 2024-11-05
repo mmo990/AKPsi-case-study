@@ -18,7 +18,7 @@ function NewTask({ addTask }) {
         color: priority === 'Priority 1' ? 'orange' : 'blue', // Assign a color based on priority
       };
       addTask(task); // Add the task to the main task list
-      navigate('/'); // Redirect to inbox after adding task
+      navigate('/today'); // Redirect to today's page after adding task
     }
   };
 
@@ -41,13 +41,9 @@ function NewTask({ addTask }) {
         <div className="task-options">
           <div className="due-date">
             <label>Due Date</label>
-            <input 
-              type="number" 
-              min="1" 
-              max="30" 
-              value={date} 
-              onChange={(e) => setDate(Number(e.target.value))} // Update date state
-            />
+            <button type="button" onClick={() => setDate(new Date().getDate())}>Today</button>
+            <button type="button" onClick={() => setDate(new Date().getDate() + 1)}>Tomorrow</button>
+            <button type="button" onClick={() => setDate(new Date().getDate() + 7)}>Next Week</button>
           </div>
           <div className="dropdown">
             <label>Priority</label>
