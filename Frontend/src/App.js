@@ -6,7 +6,6 @@ import Sidebar from './Sidebar';
 import NewTask from './NewTask';
 import Login from './Login';
 import InboxPage from './InboxPage';
-import AddPage from './AddPage';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -29,10 +28,9 @@ function App() {
             <Routes>
               <Route path="/" element={<Navigate to="/inbox" />} />
               <Route path="/inbox" element={<InboxPage tasks={tasks} title="Inbox" />} />
-              <Route path="/today" element={<InboxPage tasks={tasks} title="Today's Tasks" />} /> {/* Set title for Today */}
+              <Route path="/today" element={<InboxPage tasks={tasks.filter(task => new Date().getDate() === task.date)} title="Today's Tasks" />} />
               <Route path="/calendar" element={<Calendar tasks={tasks} />} />
               <Route path="/new-task" element={<NewTask addTask={addTask} />} />
-              <Route path="/add" element={<AddPage />} />
             </Routes>
           </div>
         ) : (
