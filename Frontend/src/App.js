@@ -15,7 +15,7 @@ function App() {
   ]);
 
   const addTask = (newTask) => {
-    setTasks([...tasks, newTask]);
+    setTasks((prevTasks) => [...prevTasks, newTask]);
   };
 
   const handleLogin = () => {

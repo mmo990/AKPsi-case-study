@@ -2,13 +2,14 @@ import React from 'react';
 import './App.css';
 
 const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const daysInMonth = Array.from({ length: 30 }, (_, i) => i + 1);
 
 const Calendar = ({ tasks }) => {
-  const daysInMonth = Array.from({ length: 30 }, (_, i) => i + 1);
-
   return (
     <div className="calendar">
-      <div className="header">November, 2024</div>
+      <div className="header">
+        <h2>November, 2024</h2>
+      </div>
       <div className="weekdays">
         {daysOfWeek.map((day, index) => (
           <div key={index} className="weekday">
