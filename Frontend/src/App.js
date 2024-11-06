@@ -29,6 +29,7 @@ function App() {
     if (isLoggedIn) {
       fetchCategories();
       fetchPriorities();
+      fetchTasks();
     }
   }, [isLoggedIn]);
 
@@ -55,6 +56,28 @@ function App() {
       })
       .catch(error => {
         console.error('There was an error fetching the priorities!', error);
+      });
+  };
+
+  // Function to fetch tasks
+  const fetchTasks = () => {
+    axios.get('http://127.0.0.1:5001/tasks')
+      .then(response => {
+        setTasks(response.data);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the tasks!', error);
+      });
+  };
+
+  // Function to add a new task
+  const addTask = (newTask) => {
+    axios.post('http://127.0.0.1:5001/tasks', newTask)
+      .then(response => {
+        setTasks([...tasks, response.data]);
+      })
+      .catch(error => {
+        console.error('There was an error creating the task!', error);
       });
   };
 
@@ -126,10 +149,6 @@ function App() {
       .catch(error => {
         console.error('There was an error deleting the priority!', error);
       });
-  };
-
-  const addTask = (newTask) => {
-    setTasks((prevTasks) => [...prevTasks, newTask]);
   };
 
   const handleLogin = () => {
