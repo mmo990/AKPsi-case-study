@@ -26,6 +26,16 @@ function App() {
     return color;
   };
 
+  // Function to get or generate a color for a category
+  const getCategoryColor = (categoryName) => {
+    const storedColors = JSON.parse(localStorage.getItem('categoryColors')) || {};
+    if (!storedColors[categoryName]) {
+      storedColors[categoryName] = getRandomColor();
+      localStorage.setItem('categoryColors', JSON.stringify(storedColors));
+    }
+    return storedColors[categoryName];
+  };
+
   // Fetch categories and priorities from the backend when the component mounts
   useEffect(() => {
     if (isLoggedIn) {
@@ -42,7 +52,7 @@ function App() {
       .then(response => {
         const categoriesWithColors = response.data.map(category => ({
           ...category,
-          color: getRandomColor()
+          color: getCategoryColor(category.name)
         }));
         setCategories(categoriesWithColors);
       })
@@ -102,7 +112,7 @@ function App() {
       .then(response => {
         const categoryWithColor = {
           ...response.data,
-          color: getRandomColor()
+          color: getCategoryColor(response.data.name)
         };
         setCategories([...categories, categoryWithColor]);
       })
