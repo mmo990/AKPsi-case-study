@@ -1,44 +1,53 @@
 import React from 'react';
-import './App.css';
+import './App.css'; // Ensure App.css is imported
 
-const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-const daysInMonth = Array.from({ length: 30 }, (_, i) => i + 1);
+function Calendar({ tasks, deleteTask }) {
+  // Helper function to get the days in the current month
+  const getMonthDays = () => {
+    const today = new Date();
+    const monthDays = [];
+    const year = today.getFullYear();
+    const month = today.getMonth();
 
-const Calendar = ({ tasks }) => {
+    // Get the number of days in the current month
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    for (let i = 1; i <= daysInMonth; i++) {
+      monthDays.push({
+        date: i,
+        fullDate: new Date(year, month, i).toISOString().split('T')[0], // Add fullDate for accurate comparison
+      });
+    }
+
+    return monthDays;
+  };
+
+  const monthDays = getMonthDays();
+
   return (
     <div className="calendar">
-      <div className="header">
-        <h2>November, 2024</h2>
-      </div>
-      <div className="weekdays">
-        {daysOfWeek.map((day, index) => (
-          <div key={index} className="weekday">
-            {day}
-          </div>
-        ))}
-      </div>
-      <div className="grid">
-        {daysInMonth.map(day => (
-          <div key={day} className="day">
-            <div className="date">{day}</div>
+      <h2 className="calendar-title">Calendar</h2>
+      <div className="calendar-grid">
+        {monthDays.map(({ date, fullDate }) => (
+          <div key={date} className="calendar-day">
+            <div className="date">{date}</div>
             <div className="events">
-              {tasks
-                .filter(task => task.date === day)
-                .map((task, index) => (
-                  <div
-                    key={index}
-                    className="event"
-                    style={{ backgroundColor: task.color }}
-                  >
-                    {task.text}
-                  </div>
-                ))}
+              {tasks.filter(task => task.due_date === fullDate).map((task, index) => (
+                <div
+                  key={index}
+                  className="event"
+                  style={{ backgroundColor: task.color }}
+                >
+                  {task.taskName}
+                  <button className="delete-button" onClick={() => deleteTask(task._id)}>X</button>
+                </div>
+              ))}
             </div>
           </div>
         ))}
       </div>
     </div>
   );
-};
+}
 
 export default Calendar;

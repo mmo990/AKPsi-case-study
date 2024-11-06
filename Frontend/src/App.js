@@ -6,14 +6,64 @@ import Sidebar from './Sidebar';
 import NewTask from './NewTask';
 import Login from './Login';
 import InboxPage from './InboxPage';
+import axios from 'axios';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [tasks, setTasks] = useState([]); // Start with an empty task list
   const [categories, setCategories] = useState([]); // Start with an empty category list
-  const [selectedDate, setSelectedDate] = useState(new Date()); // Track selected date
 
-  // Add a new task to the list
+  // Fetch categories from the backend when the component mounts
+  useEffect(() => {
+    if (isLoggedIn) {
+      fetchCategories();
+    }
+  }, [isLoggedIn]);
+
+  // Function to fetch categories
+  const fetchCategories = () => {
+    axios.get('http://127.0.0.1:5001/categories')
+      .then(response => {
+        setCategories(response.data);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the categories!', error);
+      });
+  };
+
+  // Function to add a new category
+  const addCategory = (newCategory) => {
+    axios.post('http://127.0.0.1:5001/categories', newCategory)
+      .then(response => {
+        setCategories([...categories, response.data]);
+      })
+      .catch(error => {
+        console.error('There was an error creating the category!', error);
+      });
+  };
+
+  // Function to update a category
+  const updateCategory = (id, updatedCategory) => {
+    axios.put(`http://127.0.0.1:5001/categories/${id}`, updatedCategory)
+      .then(response => {
+        setCategories(categories.map(category => category._id === id ? response.data : category));
+      })
+      .catch(error => {
+        console.error('There was an error updating the category!', error);
+      });
+  };
+
+  // Function to delete a category
+  const deleteCategory = (id) => {
+    axios.delete(`http://127.0.0.1:5001/categories/${id}`)
+      .then(response => {
+        setCategories(categories.filter(category => category._id !== id));
+      })
+      .catch(error => {
+        console.error('There was an error deleting the category!', error);
+      });
+  };
+
   const addTask = (newTask) => {
     setTasks((prevTasks) => [...prevTasks, newTask]);
   };
@@ -40,23 +90,12 @@ function App() {
       <div className="App">
         {isLoggedIn ? (
           <div className="app-container">
-            <Sidebar categories={categories} onDateSelect={handleDateSelect} />
+            <Sidebar categories={categories} />
             <Routes>
               <Route path="/" element={<Navigate to="/inbox" />} />
               <Route path="/inbox" element={<InboxPage tasks={tasks} title="Inbox" />} />
-              <Route
-                path="/today"
-                element={
-                  <InboxPage
-                    tasks={filterTasksByDate(selectedDate)}
-                    title={`Tasks for ${selectedDate.toDateString()}`}
-                  />
-                }
-              />
-              <Route
-                path="/calendar"
-                element={<Calendar tasks={tasks} selectedDate={selectedDate} onDateSelect={handleDateSelect} />}
-              />
+              <Route path="/today" element={<InboxPage tasks={tasks.filter(task => new Date().getDate() === task.date)} title="Today's Tasks" />} />
+              <Route path="/calendar" element={<Calendar tasks={tasks} />} />
               <Route path="/new-task" element={<NewTask addTask={addTask} />} />
             </Routes>
           </div>
