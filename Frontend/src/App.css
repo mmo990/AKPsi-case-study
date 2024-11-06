@@ -31,12 +31,15 @@ body {
   border-right: 1px solid #e0e0e0;
   padding: 20px;
   text-align: left;
+  height: 100vh;
+  overflow-y: auto;
 }
 
 .logo {
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-bottom: 20px;
 }
 
 .logo h2 {
@@ -112,6 +115,8 @@ body {
 .dropdown-heading {
   font-weight: bold;
   margin-top: 20px;
+  font-size: 1.2em;
+  margin-bottom: 10px;
 }
 
 /* Login Container */
@@ -244,6 +249,7 @@ body {
   padding: 20px;
   border-right: 1px solid #e0e0e0;
   overflow-y: auto;
+  background-color: #f4f4f4;
  }
  
  
@@ -255,7 +261,7 @@ body {
  
  
  .logo-icon {
-  font-size: 1.8em;
+  font-size: 2em;
   margin-right: 10px;
  }
  
@@ -463,6 +469,8 @@ body {
   color: inherit;
   font-size: 1em;
   cursor: pointer;
+  display: block;
+  padding: 10px 0;
  }
  
  
@@ -705,7 +713,7 @@ body {
 }
 
 .add-category button, .add-priority button {
-  background-color: #ff5555; /* Example background color */
+  background-color: #4CAF50;
   color: white;
   border: none;
   padding: 5px 10px;
@@ -713,7 +721,7 @@ body {
 }
 
 .add-category button:hover, .add-priority button:hover {
-  background-color: #ff1919; /* Example hover color */
+  background-color: #45a049;
 }
 
 .inbox {
