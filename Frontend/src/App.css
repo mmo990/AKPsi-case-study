@@ -78,7 +78,7 @@ body {
   gap: 5px;
 }
 
-.category-color.work {
+.category-color {
   width: 10px;
   height: 10px;
   background-color: orange;
