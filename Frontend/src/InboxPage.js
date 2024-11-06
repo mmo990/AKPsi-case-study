@@ -22,49 +22,52 @@ function InboxPage({ tasks, title }) {
 
   return (
     <div className="inbox">
-      <h2>{title}</h2>
+      <h2 className="inbox-title">{title}</h2>
       {title === "Inbox" ? (
         weekDates.map(({ date, day }) => (
           <div key={date} className="week-day">
-            <h3>{day} ({date})</h3>
-            {tasks.filter(task => task.date === date).length > 0 ? (
-              tasks
-                .filter(task => task.date === date)
-                .map((task, index) => {
-                  const taskText = task?.text || 'Untitled Task'; // Default to 'Untitled Task' if text is undefined
-                  const colorLabel = task.color === 'orange' ? 'Work' : 'Personal'; // Determine color label
-                  return (
-                    <div key={index} className="task">
-                      <p>{taskText.toLowerCase()}</p>
-                      <p>Due Date: {date}</p>
-                      <p style={{ color: task.color }}>{colorLabel}</p>
-                    </div>
-                  );
-                })
-            ) : (
-              <p>No tasks available for this day.</p>
-            )}
+            <h3 className="day-heading">
+              {day} ({date})
+            </h3>
+            <div className="task-list">
+              {tasks.filter(task => task.date === date).length > 0 ? (
+                tasks
+                  .filter(task => task.date === date)
+                  .map((task, index) => {
+                    const taskText = task?.text || 'Untitled Task';
+                    const colorLabel = task.color === 'orange' ? 'Work' : 'Personal';
+                    return (
+                      <div key={index} className="task">
+                        <p className="task-text">{taskText}</p>
+                        <p className="task-date">Due Date: {date}</p>
+                        <p className="task-category" style={{ color: task.color }}>{colorLabel}</p>
+                      </div>
+                    );
+                  })
+              ) : (
+                <p className="no-tasks">No tasks available for this day.</p>
+              )}
+            </div>
           </div>
         ))
       ) : (
-        // Display today's tasks only when the title is "Today's Tasks"
         <>
           {tasks.filter(task => task.date === new Date().getDate()).length > 0 ? (
             tasks
               .filter(task => task.date === new Date().getDate())
               .map((task, index) => {
-                const taskText = task?.text || 'Untitled Task'; // Default to 'Untitled Task' if text is undefined
-                const colorLabel = task.color === 'orange' ? 'Work' : 'Personal'; // Determine color label
+                const taskText = task?.text || 'Untitled Task';
+                const colorLabel = task.color === 'orange' ? 'Work' : 'Personal';
                 return (
                   <div key={index} className="task">
-                    <p>{taskText.toLowerCase()}</p>
-                    <p>Due Date: {new Date().getDate()}</p>
-                    <p style={{ color: task.color }}>{colorLabel}</p>
+                    <p className="task-text">{taskText}</p>
+                    <p className="task-date">Due Date: {new Date().getDate()}</p>
+                    <p className="task-category" style={{ color: task.color }}>{colorLabel}</p>
                   </div>
                 );
               })
           ) : (
-            <p>No tasks available for today.</p>
+            <p className="no-tasks">No tasks available for today.</p>
           )}
         </>
       )}
