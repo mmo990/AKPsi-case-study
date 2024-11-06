@@ -1,7 +1,7 @@
 import React from 'react';
-import './App.css'; // Ensure Calendar.css is imported
+import './App.css'; // Ensure App.css is imported
 
-function Calendar({ tasks }) {
+function Calendar({ tasks, deleteTask }) {
   // Helper function to get the days in the current month
   const getMonthDays = () => {
     const today = new Date();
@@ -39,6 +39,7 @@ function Calendar({ tasks }) {
                   style={{ backgroundColor: task.color }}
                 >
                   {task.taskName}
+                  <button className="delete-button" onClick={() => deleteTask(task._id)}>X</button>
                 </div>
               ))}
             </div>

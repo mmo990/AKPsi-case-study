@@ -76,7 +76,14 @@ function App() {
   const fetchTasks = () => {
     axios.get('http://127.0.0.1:5001/tasks')
       .then(response => {
-        setTasks(response.data);
+        const tasksWithColors = response.data.map(task => {
+          const category = categories.find(cat => cat.name === task.category);
+          return {
+            ...task,
+            color: category ? category.color : '#e0e0e0' // Default color if category not found
+          };
+        });
+        setTasks(tasksWithColors);
       })
       .catch(error => {
         console.error('There was an error fetching the tasks!', error);
@@ -103,6 +110,18 @@ function App() {
       })
       .catch(error => {
         console.error('There was an error creating the task!', error);
+      });
+  };
+
+  // Function to delete a task
+  const deleteTask = (id) => {
+    axios.delete(`http://127.0.0.1:5001/tasks/${id}`)
+      .then(response => {
+        setTasks(tasks.filter(task => task._id !== id));
+        fetchTodayTasks(); // Refresh today's tasks after deleting a task
+      })
+      .catch(error => {
+        console.error('There was an error deleting the task!', error);
       });
   };
 
@@ -197,7 +216,7 @@ function App() {
               <Route path="/" element={<Navigate to="/inbox" />} />
               <Route path="/inbox" element={<InboxPage tasks={tasks} title="Inbox" />} />
               <Route path="/today" element={<TodayPage tasks={todayTasks} title="Today's Tasks" />} /> {/* Pass today's tasks */}
-              <Route path="/calendar" element={<Calendar tasks={tasks} />} />
+              <Route path="/calendar" element={<Calendar tasks={tasks} deleteTask={deleteTask} />} /> {/* Pass deleteTask function */}
               <Route path="/new-task" element={<NewTask addTask={addTask} categories={categories} priorities={priorities} />} />
             </Routes>
           </div>

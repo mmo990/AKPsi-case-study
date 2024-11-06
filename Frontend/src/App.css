@@ -388,7 +388,7 @@ body {
  
  .submit-btn {
   font-size: 1em;
-  background: #e8e6e6db;
+  background: #76dd66db;
   color: rgb(0, 0, 0);
   border: none;
   padding: 10px;
@@ -869,10 +869,30 @@ body {
 }
 
 .event {
-  background-color: #e0f7fa;
-  color: #00796b;
-  padding: 5px;
+  color: black; /* Set text color to black */
+  padding: 10px; /* Increase padding for better spacing */
   border-radius: 4px;
   margin-bottom: 5px;
   text-align: center;
+  position: relative; /* Position relative for delete button */
+  display: flex;
+  align-items: center; /* Center content vertically */
+  justify-content: center; /* Center content horizontally */
+  padding-right: 30px; /* Add padding to the right for spacing from the delete button */
+}
+
+.delete-button {
+  background-color: transparent;
+  border: none;
+  color: red;
+  font-size: 1em;
+  position: absolute;
+  top: 50%;
+  right: 10px; /* Add some padding from the right */
+  transform: translateY(-50%); /* Center vertically */
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  color: darkred;
 }
