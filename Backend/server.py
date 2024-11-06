@@ -217,10 +217,6 @@ def get_priority(id):
 
 @app.route('/priorities/<id>', methods=['PUT'])
 def update_priority(id):
-    try:
-        ObjectId(id)
-    except InvalidId:
-        abort(400, description="Invalid priority ID format.")
     data = request.get_json()
     updated_priority = {
         'name': data['name']
@@ -233,10 +229,6 @@ def update_priority(id):
 
 @app.route('/priorities/<id>', methods=['DELETE'])
 def delete_priority(id):
-    try:
-        ObjectId(id)
-    except InvalidId:
-        abort(400, description="Invalid priority ID format.")
     result = priorities_collection.delete_one({'_id': ObjectId(id)})
     if result.deleted_count == 0:
         abort(404)

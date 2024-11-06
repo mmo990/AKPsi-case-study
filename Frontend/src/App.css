@@ -657,3 +657,27 @@ body {
 .add-category button:hover {
   background-color: #ff1919; /* Example hover color */
 }
+
+.add-category, .add-priority {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.add-category input, .add-priority input {
+  flex: 1;
+  padding: 5px;
+  margin-right: 20px;
+}
+
+.add-category button, .add-priority button {
+  background-color: #ff5555; /* Example background color */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.add-category button:hover, .add-priority button:hover {
+  background-color: #ff1919; /* Example hover color */
+}

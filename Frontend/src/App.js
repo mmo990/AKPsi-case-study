@@ -12,11 +12,13 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [tasks, setTasks] = useState([]); // Start with an empty task list
   const [categories, setCategories] = useState([]); // Start with an empty category list
+  const [priorities, setPriorities] = useState([]); // Start with an empty priority list
 
-  // Fetch categories from the backend when the component mounts
+  // Fetch categories and priorities from the backend when the component mounts
   useEffect(() => {
     if (isLoggedIn) {
       fetchCategories();
+      fetchPriorities();
     }
   }, [isLoggedIn]);
 
@@ -31,6 +33,17 @@ function App() {
       });
   };
 
+  // Function to fetch priorities
+  const fetchPriorities = () => {
+    axios.get('http://127.0.0.1:5001/priorities')
+      .then(response => {
+        setPriorities(response.data);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the priorities!', error);
+      });
+  };
+
   // Function to add a new category
   const addCategory = (newCategory) => {
     axios.post('http://127.0.0.1:5001/categories', newCategory)
@@ -39,6 +52,17 @@ function App() {
       })
       .catch(error => {
         console.error('There was an error creating the category!', error);
+      });
+  };
+
+  // Function to add a new priority
+  const addPriority = (newPriority) => {
+    axios.post('http://127.0.0.1:5001/priorities', newPriority)
+      .then(response => {
+        setPriorities([...priorities, response.data]);
+      })
+      .catch(error => {
+        console.error('There was an error creating the priority!', error);
       });
   };
 
@@ -53,6 +77,17 @@ function App() {
       });
   };
 
+  // Function to update a priority
+  const updatePriority = (id, updatedPriority) => {
+    axios.put(`http://127.0.0.1:5001/priorities/${id}`, updatedPriority)
+      .then(response => {
+        setPriorities(priorities.map(priority => priority._id === id ? response.data : priority));
+      })
+      .catch(error => {
+        console.error('There was an error updating the priority!', error);
+      });
+  };
+
   // Function to delete a category
   const deleteCategory = (id) => {
     axios.delete(`http://127.0.0.1:5001/categories/${id}`)
@@ -61,6 +96,17 @@ function App() {
       })
       .catch(error => {
         console.error('There was an error deleting the category!', error);
+      });
+  };
+
+  // Function to delete a priority
+  const deletePriority = (id) => {
+    axios.delete(`http://127.0.0.1:5001/priorities/${id}`)
+      .then(response => {
+        setPriorities(priorities.filter(priority => priority._id !== id));
+      })
+      .catch(error => {
+        console.error('There was an error deleting the priority!', error);
       });
   };
 
@@ -77,13 +123,20 @@ function App() {
       <div className="App">
         {isLoggedIn ? (
           <div className="app-container">
-            <Sidebar categories={categories} deleteCategory={deleteCategory} addCategory={addCategory} />
+            <Sidebar
+              categories={categories}
+              deleteCategory={deleteCategory}
+              addCategory={addCategory}
+              priorities={priorities}
+              deletePriority={deletePriority}
+              addPriority={addPriority}
+            />
             <Routes>
               <Route path="/" element={<Navigate to="/inbox" />} />
               <Route path="/inbox" element={<InboxPage tasks={tasks} title="Inbox" />} />
               <Route path="/today" element={<InboxPage tasks={tasks.filter(task => new Date().getDate() === task.date)} title="Today's Tasks" />} />
               <Route path="/calendar" element={<Calendar tasks={tasks} />} />
-              <Route path="/new-task" element={<NewTask addTask={addTask} categories={categories} />} />
+              <Route path="/new-task" element={<NewTask addTask={addTask} categories={categories} priorities={priorities} />} />
             </Routes>
           </div>
         ) : (
