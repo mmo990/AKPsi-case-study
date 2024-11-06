@@ -1,10 +1,8 @@
-#from flask import Flask, render_template, request
-import pandas as pd
-import requests as rq
-
-from flask import Flask, abort, current_app, request, render_template
-import json
+from flask import Flask, request, jsonify, abort
 from flask_cors import CORS
+from datetime import datetime
+from pymongo import MongoClient
+from bson.objectid import ObjectId, InvalidId
 
 app = Flask(__name__)
 CORS(app)
