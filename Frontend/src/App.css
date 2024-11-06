@@ -822,3 +822,57 @@ body {
   font-size: 1em;
   font-style: italic;
 }
+
+/* Add these styles to App.css */
+
+.calendar {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center the content horizontally */
+}
+
+.calendar-title {
+  font-size: 2em;
+  margin-bottom: 20px;
+  text-align: center; /* Center the title text */
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* 7 columns for the days of the week */
+  gap: 10px;
+  width: 100%;
+  max-width: 1200px; /* Optional: Set a max width for better readability */
+}
+
+.calendar-day {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center the content horizontally */
+}
+
+.date {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.events {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.event {
+  background-color: #e0f7fa;
+  color: #00796b;
+  padding: 5px;
+  border-radius: 4px;
+  margin-bottom: 5px;
+  text-align: center;
+}
