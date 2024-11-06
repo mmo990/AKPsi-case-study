@@ -6,6 +6,7 @@ import Sidebar from './Sidebar';
 import NewTask from './NewTask';
 import Login from './Login';
 import InboxPage from './InboxPage';
+import TodayPage from './TodayPage'; // Import TodayPage
 import axios from 'axios';
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
   const [tasks, setTasks] = useState([]); // Start with an empty task list
   const [categories, setCategories] = useState([]); // Start with an empty category list
   const [priorities, setPriorities] = useState([]); // Start with an empty priority list
+  const [todayTasks, setTodayTasks] = useState([]); // Start with an empty list for today's tasks
 
   // Function to generate a random color
   const getRandomColor = () => {
@@ -30,6 +32,7 @@ function App() {
       fetchCategories();
       fetchPriorities();
       fetchTasks();
+      fetchTodayTasks();
     }
   }, [isLoggedIn]);
 
@@ -70,11 +73,23 @@ function App() {
       });
   };
 
+  // Function to fetch tasks due today
+  const fetchTodayTasks = () => {
+    axios.get('http://127.0.0.1:5001/tasks/today')
+      .then(response => {
+        setTodayTasks(response.data);
+      })
+      .catch(error => {
+        console.error('There was an error fetching todays tasks!', error);
+      });
+  };
+
   // Function to add a new task
   const addTask = (newTask) => {
     axios.post('http://127.0.0.1:5001/tasks', newTask)
       .then(response => {
         setTasks([...tasks, response.data]);
+        fetchTodayTasks(); // Refresh today's tasks after adding a new task
       })
       .catch(error => {
         console.error('There was an error creating the task!', error);
@@ -171,7 +186,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Navigate to="/inbox" />} />
               <Route path="/inbox" element={<InboxPage tasks={tasks} title="Inbox" />} />
-              <Route path="/today" element={<InboxPage tasks={tasks.filter(task => new Date().getDate() === task.date)} title="Today's Tasks" />} />
+              <Route path="/today" element={<TodayPage tasks={todayTasks} title="Today's Tasks" />} /> {/* Pass today's tasks */}
               <Route path="/calendar" element={<Calendar tasks={tasks} />} />
               <Route path="/new-task" element={<NewTask addTask={addTask} categories={categories} priorities={priorities} />} />
             </Routes>
