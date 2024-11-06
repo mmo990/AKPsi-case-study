@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function Sidebar() {
+function Sidebar({ categories }) {
   return (
     <div className="sidebar">
       <div className="logo">
@@ -17,12 +17,11 @@ function Sidebar() {
       <br />
       <div className="dropdown-heading">Categories</div>
       <ul className="category-list">
-        <li className="category-item">
-          <span className="category-color work"></span> Work <span className="badge"> 2</span>
-        </li>
-        <li className="category-item">
-          <span className="category-color work"></span> Personal <span className="badge"> 5</span>
-        </li>
+        {categories.map(category => (
+          <li key={category._id} className="category-item">
+            <span className={`category-color ${category.name.toLowerCase()}`}></span> {category.name} <span className="badge"> {category.count || 0}</span>
+          </li>
+        ))}
       </ul>
       <br />
       <div className="dropdown-heading">Priority</div>
