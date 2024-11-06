@@ -119,6 +119,7 @@ def get_tasks_for_today():
     tasks = tasks_collection.find()
     for task in tasks:
         if task['due_date']:
+            print("hi")
             try:
                 due_date = datetime.fromisoformat(task['due_date']).date()
                 if due_date == today:
