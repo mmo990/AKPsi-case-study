@@ -78,7 +78,7 @@ body {
   gap: 5px;
 }
 
-.category-color.work {
+.category-color {
   width: 10px;
   height: 10px;
   background-color: orange;
@@ -491,12 +491,10 @@ body {
   border-radius: 8px;
   background-color: #f8f8f8;
  }
- 
- 
+  
  .task-item input[type="checkbox"] {
   margin-right: 10px;
  }
- 
  
  .task-details {
   display: flex;
@@ -533,3 +531,75 @@ body {
   margin-top: 5px;
 }
 
+.inbox {
+  padding: 20px;
+}
+
+.inbox-title {
+  font-size: 2em;
+  font-weight: bold;
+  width: 485%;
+  margin: 10px auto;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.week-day {
+  margin-bottom: 20px;
+  width: 485%;
+  margin: 10px auto;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+.day-heading {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.task {
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  width: 500%;
+  margin: 10px auto;
+}
+
+.task-text {
+  font-weight: 500;
+  color: #555;
+  text-align: center;
+}
+
+.task-date {
+  font-size: 0.9em;
+  color: #777;
+  text-align: center;
+}
+
+.task-category {
+  font-size: 0.9em;
+  font-weight: bold;
+  text-align: center;
+}
+
+.no-tasks {
+  color: #999;
+  font-size: 0.9em;
+  font-style: italic;
+}
