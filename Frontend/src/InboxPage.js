@@ -1,6 +1,9 @@
 import React from 'react';
+import './App.css'; // Ensure App.css is imported
 
 function InboxPage({ tasks, title }) {
+  console.log('Tasks in InboxPage:', tasks); // Add this line
+
   // Helper function to get the week dates for the Inbox page
   const getWeekDates = () => {
     const today = new Date();
@@ -11,6 +14,7 @@ function InboxPage({ tasks, title }) {
       nextDate.setDate(today.getDate() + i);
       weekDates.push({
         date: nextDate.getDate(),
+        fullDate: nextDate.toISOString().split('T')[0], // Add fullDate for accurate comparison
         day: nextDate.toLocaleString('default', { weekday: 'long' }),
       });
     }
@@ -24,52 +28,48 @@ function InboxPage({ tasks, title }) {
     <div className="inbox">
       <h2 className="inbox-title">{title}</h2>
       {title === "Inbox" ? (
-        weekDates.map(({ date, day }) => (
+        weekDates.map(({ date, fullDate, day }) => (
           <div key={date} className="week-day">
             <h3 className="day-heading">
               {day} ({date})
             </h3>
             <div className="task-list">
-              {tasks.filter(task => task.date === date).length > 0 ? (
-                tasks
-                  .filter(task => task.date === date)
-                  .map((task, index) => {
-                    const taskText = task?.text || 'Untitled Task';
-                    const colorLabel = task.color === 'orange' ? 'Work' : 'Personal';
-                    return (
-                      <div key={index} className="task">
-                        <p className="task-text">{taskText}</p>
-                        <p className="task-date">Due Date: {date}</p>
-                        <p className="task-category" style={{ color: task.color }}>{colorLabel}</p>
-                      </div>
-                    );
-                  })
+              {tasks.filter(task => task.due_date === fullDate).length > 0 ? (
+                tasks.filter(task => task.due_date === fullDate).map(task => (
+                  <div key={task._id} className="task-item">
+                    <div className="task-name">{task.taskName}</div>
+                    <div className="task-details">
+                      <span className="task-due-date">Due: {task.due_date}</span>
+                      <span className="task-priority">{task.priority}</span>
+                      <span className="task-category">{task.category}</span>
+                    </div>
+                    <div className="task-description">{task.description}</div>
+                  </div>
+                ))
               ) : (
-                <p className="no-tasks">No tasks available for this day.</p>
+                <div className="no-tasks">No tasks for this day.</div>
               )}
             </div>
           </div>
         ))
       ) : (
-        <>
-          {tasks.filter(task => task.date === new Date().getDate()).length > 0 ? (
-            tasks
-              .filter(task => task.date === new Date().getDate())
-              .map((task, index) => {
-                const taskText = task?.text || 'Untitled Task';
-                const colorLabel = task.color === 'orange' ? 'Work' : 'Personal';
-                return (
-                  <div key={index} className="task">
-                    <p className="task-text">{taskText}</p>
-                    <p className="task-date">Due Date: {new Date().getDate()}</p>
-                    <p className="task-category" style={{ color: task.color }}>{colorLabel}</p>
-                  </div>
-                );
-              })
+        <div className="task-list">
+          {tasks.length > 0 ? (
+            tasks.map(task => (
+              <div key={task._id} className="task-item">
+                <div className="task-name">{task.taskName}</div>
+                <div className="task-details">
+                  <span className="task-due-date">Due: {task.due_date}</span>
+                  <span className="task-priority">{task.priority}</span>
+                  <span className="task-category">{task.category}</span>
+                </div>
+                <div className="task-description">{task.description}</div>
+              </div>
+            ))
           ) : (
-            <p className="no-tasks">No tasks available for today.</p>
+            <div className="no-tasks">No tasks available.</div>
           )}
-        </>
+        </div>
       )}
     </div>
   );
