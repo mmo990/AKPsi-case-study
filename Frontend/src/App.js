@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import './App.css';
 import Calendar from './Calendar';
 import Sidebar from './Sidebar';
@@ -76,7 +76,6 @@ function App() {
   const fetchTasks = () => {
     axios.get('http://127.0.0.1:5001/tasks')
       .then(response => {
-        console.log('Fetched tasks:', response.data); // Add this line
         setTasks(response.data);
       })
       .catch(error => {
