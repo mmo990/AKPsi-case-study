@@ -83,7 +83,7 @@ function App() {
               <Route path="/inbox" element={<InboxPage tasks={tasks} title="Inbox" />} />
               <Route path="/today" element={<InboxPage tasks={tasks.filter(task => new Date().getDate() === task.date)} title="Today's Tasks" />} />
               <Route path="/calendar" element={<Calendar tasks={tasks} />} />
-              <Route path="/new-task" element={<NewTask addTask={addTask} />} />
+              <Route path="/new-task" element={<NewTask addTask={addTask} addCategory={addCategory} categories={categories} />} />
             </Routes>
           </div>
         ) : (
