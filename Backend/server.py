@@ -9,7 +9,7 @@ CORS(app)
 
 
 # MongoDB connection
-client = MongoClient('mongodb+srv://matbbiji:123@taskmanager.frv2k.mongodb.net/?retryWrites=true&w=majority&appName=TaskManager')
+client = MongoClient('mongodb+srv://matbbiji:123@taskmanager.frv2k.mongodb.net/?retryWrites=true&w=majority&appName=TaskManager', tls=True, tlsAllowInvalidCertificates=True)
 db = client['task_manager']
 tasks_collection = db['tasks']
 categories_collection = db['categories']

@@ -603,3 +603,13 @@ body {
   font-size: 0.9em;
   font-style: italic;
 }
+
+.dropdown option[value="add_new"] {
+  font-weight: bold;
+  color: green;
+}
+
+.dropdown option[value="add_new_priority"] {
+  font-weight: bold;
+  color: green;
+}
