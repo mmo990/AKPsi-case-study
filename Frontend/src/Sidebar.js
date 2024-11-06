@@ -1,7 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-function Sidebar({ categories }) {
+function Sidebar({ categories, deleteCategory, addCategory }) {
+  const [newCategory, setNewCategory] = useState('');
+
+  const handleAddCategory = () => {
+    if (newCategory.trim()) {
+      addCategory({ name: newCategory });
+      setNewCategory('');
+    }
+  };
+
   return (
     <div className="sidebar">
       <div className="logo">
@@ -20,9 +29,19 @@ function Sidebar({ categories }) {
         {categories.map(category => (
           <li key={category._id} className="category-item">
             <span className={`category-color ${category.name.toLowerCase()}`}></span> {category.name} <span className="badge"> {category.count || 0}</span>
+            <button className="delete-button" onClick={() => deleteCategory(category._id)}>-</button>
           </li>
         ))}
       </ul>
+      <div className="add-category">
+        <input
+          type="text"
+          value={newCategory}
+          onChange={(e) => setNewCategory(e.target.value)}
+          placeholder="Add new category"
+        />
+        <button onClick={handleAddCategory}>+</button>
+      </div>
       <br />
       <div className="dropdown-heading">Priority</div>
       <ul className="priority-list">

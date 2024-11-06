@@ -27,7 +27,7 @@ body {
 /* Sidebar styling */
 .sidebar {
   width: 250px;
-  background-color: #ffffff;
+  background-color: #f4f4f4; /* Example background color */
   border-right: 1px solid #e0e0e0;
   padding: 20px;
   text-align: left;
@@ -76,6 +76,12 @@ body {
   display: flex;
   align-items: center;
   gap: 5px;
+}
+
+.category-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .category-color {
@@ -612,4 +618,42 @@ body {
 .dropdown option[value="add_new_priority"] {
   font-weight: bold;
   color: green;
+}
+
+.delete-button {
+  background-color: transparent;
+  border: none;
+  color: #000000; /* Example color for the minus sign */
+  font-size: 1.2em;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 10px;
+}
+
+.delete-button:hover {
+  color: #ff5555; /* Example hover color */
+}
+
+.add-category {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.add-category input {
+  flex: 1;
+  padding: 5px;
+  margin-right: 20px;
+}
+
+.add-category button {
+  background-color: #ff5555; /* Example background color */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.add-category button:hover {
+  background-color: #ff1919; /* Example hover color */
 }

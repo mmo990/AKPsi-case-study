@@ -77,13 +77,13 @@ function App() {
       <div className="App">
         {isLoggedIn ? (
           <div className="app-container">
-            <Sidebar categories={categories} />
+            <Sidebar categories={categories} deleteCategory={deleteCategory} addCategory={addCategory} />
             <Routes>
               <Route path="/" element={<Navigate to="/inbox" />} />
               <Route path="/inbox" element={<InboxPage tasks={tasks} title="Inbox" />} />
               <Route path="/today" element={<InboxPage tasks={tasks.filter(task => new Date().getDate() === task.date)} title="Today's Tasks" />} />
               <Route path="/calendar" element={<Calendar tasks={tasks} />} />
-              <Route path="/new-task" element={<NewTask addTask={addTask} addCategory={addCategory} categories={categories} />} />
+              <Route path="/new-task" element={<NewTask addTask={addTask} categories={categories} />} />
             </Routes>
           </div>
         ) : (
