@@ -76,6 +76,7 @@ function App() {
   const fetchTasks = () => {
     axios.get('http://127.0.0.1:5001/tasks')
       .then(response => {
+        console.log('Fetched tasks:', response.data); // Add this line
         setTasks(response.data);
       })
       .catch(error => {
