@@ -36,7 +36,7 @@ function Sidebar({ categories, deleteCategory, addCategory, priorities, deletePr
       <ul className="category-list">
         {categories.map(category => (
           <li key={category._id} className="category-item">
-            <span className={`category-color ${category.name.toLowerCase()}`}></span> {category.name} <span className="badge"> {category.count || 0}</span>
+            <span className="category-color" style={{ backgroundColor: category.color }}></span> {category.name} <span className="badge"> {category.count || 0}</span>
             <button className="delete-button" onClick={() => deleteCategory(category._id)}>-</button>
           </li>
         ))}

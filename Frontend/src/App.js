@@ -14,6 +14,16 @@ function App() {
   const [categories, setCategories] = useState([]); // Start with an empty category list
   const [priorities, setPriorities] = useState([]); // Start with an empty priority list
 
+  // Function to generate a random color
+  const getRandomColor = () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
+
   // Fetch categories and priorities from the backend when the component mounts
   useEffect(() => {
     if (isLoggedIn) {
@@ -26,7 +36,11 @@ function App() {
   const fetchCategories = () => {
     axios.get('http://127.0.0.1:5001/categories')
       .then(response => {
-        setCategories(response.data);
+        const categoriesWithColors = response.data.map(category => ({
+          ...category,
+          color: getRandomColor()
+        }));
+        setCategories(categoriesWithColors);
       })
       .catch(error => {
         console.error('There was an error fetching the categories!', error);
@@ -48,7 +62,11 @@ function App() {
   const addCategory = (newCategory) => {
     axios.post('http://127.0.0.1:5001/categories', newCategory)
       .then(response => {
-        setCategories([...categories, response.data]);
+        const categoryWithColor = {
+          ...response.data,
+          color: getRandomColor()
+        };
+        setCategories([...categories, categoryWithColor]);
       })
       .catch(error => {
         console.error('There was an error creating the category!', error);
