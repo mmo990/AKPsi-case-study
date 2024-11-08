@@ -7,7 +7,8 @@ import NewTask from './NewTask';
 import Login from './Login';
 import InboxPage from './InboxPage';
 import TodayPage from './TodayPage'; // Import TodayPage
-import axios from 'axios';
+import { fetchCategories, fetchPriorities, fetchTasks, fetchTodayTasks } from './api'; // Import API calls
+import axios from 'axios'; // Import axios
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -36,71 +37,26 @@ function App() {
     return storedColors[categoryName];
   };
 
-  
   // Fetch categories and priorities from the backend when the component mounts
   useEffect(() => {
     if (isLoggedIn) {
-      fetchCategories();
-      fetchPriorities();
-      fetchTasks();
-      fetchTodayTasks();
+      const fetchData = async () => {
+        try {
+          const categoriesData = await fetchCategories();
+          setCategories(categoriesData);
+          const prioritiesData = await fetchPriorities();
+          setPriorities(prioritiesData);
+          const tasksData = await fetchTasks(categoriesData);
+          setTasks(tasksData);
+          const todayTasksData = await fetchTodayTasks();
+          setTodayTasks(todayTasksData);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+      fetchData();
     }
   }, [isLoggedIn]);
-
-  // Function to fetch categories
-  const fetchCategories = () => {
-    axios.get('http://127.0.0.1:5001/categories')
-      .then(response => {
-        const categoriesWithColors = response.data.map(category => ({
-          ...category,
-          color: getCategoryColor(category.name)
-        }));
-        setCategories(categoriesWithColors);
-      })
-      .catch(error => {
-        console.error('There was an error fetching the categories!', error);
-      });
-  };
-
-  // Function to fetch priorities
-  const fetchPriorities = () => {
-    axios.get('http://127.0.0.1:5001/priorities')
-      .then(response => {
-        setPriorities(response.data);
-      })
-      .catch(error => {
-        console.error('There was an error fetching the priorities!', error);
-      });
-  };
-
-  // Function to fetch tasks
-  const fetchTasks = () => {
-    axios.get('http://127.0.0.1:5001/tasks')
-      .then(response => {
-        const tasksWithColors = response.data.map(task => {
-          const category = categories.find(cat => cat.name === task.category);
-          return {
-            ...task,
-            color: category ? category.color : '#e0e0e0' // Default color if category not found
-          };
-        });
-        setTasks(tasksWithColors);
-      })
-      .catch(error => {
-        console.error('There was an error fetching the tasks!', error);
-      });
-  };
-
-  // Function to fetch tasks due today
-  const fetchTodayTasks = () => {
-    axios.get('http://127.0.0.1:5001/tasks/today')
-      .then(response => {
-        setTodayTasks(response.data);
-      })
-      .catch(error => {
-        console.error('There was an error fetching todays tasks!', error);
-      });
-  };
 
   // Function to add a new task
   const addTask = (newTask) => {
