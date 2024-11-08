@@ -43,7 +43,7 @@ function InboxPage({ tasks, title }) {
                       <span className="task-priority">{task.priority}</span>
                       <span className="task-category">{task.category}</span>
                     </div>
-                    <div className="task-description">{task.description}</div>
+                    <div className="task-description"><b>Description: </b> {task.description}</div>
                   </div>
                 ))
               ) : (
