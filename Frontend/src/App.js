@@ -36,6 +36,7 @@ function App() {
     return storedColors[categoryName];
   };
 
+  
   // Fetch categories and priorities from the backend when the component mounts
   useEffect(() => {
     if (isLoggedIn) {
