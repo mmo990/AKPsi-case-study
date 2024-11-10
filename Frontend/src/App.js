@@ -12,8 +12,30 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [tasks, setTasks] = useState([]); // Start with an empty task list
   const [categories, setCategories] = useState([]); // Start with an empty category list
+  const [priorities, setPriorities] = useState([]); // Start with an empty priority list
+  const [todayTasks, setTodayTasks] = useState([]); // Start with an empty list for today's tasks
 
-  // Fetch categories from the backend when the component mounts
+  // Function to generate a random color
+  const getRandomColor = () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
+
+  // Function to get or generate a color for a category
+  const getCategoryColor = (categoryName) => {
+    const storedColors = JSON.parse(localStorage.getItem('categoryColors')) || {};
+    if (!storedColors[categoryName]) {
+      storedColors[categoryName] = getRandomColor();
+      localStorage.setItem('categoryColors', JSON.stringify(storedColors));
+    }
+    return storedColors[categoryName];
+  };
+
+  // Fetch categories and priorities from the backend when the component mounts
   useEffect(() => {
     if (isLoggedIn) {
       fetchCategories();
