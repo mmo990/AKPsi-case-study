@@ -718,12 +718,6 @@ body {
   color: #555;
 }
 
-.no-tasks {
-  text-align: center;
-  color: #999;
-  font-size: 1em;
-  font-style: italic;
-}
 
 /* Add these styles to App.css */
 
@@ -793,8 +787,4 @@ body {
   right: 10px; /* Add some padding from the right */
   transform: translateY(-50%); /* Center vertically */
   cursor: pointer;
-}
-
-.delete-button:hover {
-  color: darkred;
 }

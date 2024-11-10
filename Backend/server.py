@@ -1,10 +1,8 @@
-#from flask import Flask, render_template, request
-import pandas as pd
-import requests as rq
-from flask import Flask, abort, current_app, request, render_template
-import json
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, abort
 from flask_cors import CORS
+from datetime import datetime
+from pymongo import MongoClient
+from bson.objectid import ObjectId, InvalidId
 
 app = Flask(__name__)
 CORS(app)
@@ -121,7 +119,6 @@ def get_tasks_for_today():
     tasks = tasks_collection.find()
     for task in tasks:
         if task['due_date']:
-            print("hi")
             try:
                 due_date = datetime.fromisoformat(task['due_date']).date()
                 if due_date == today:
@@ -129,7 +126,6 @@ def get_tasks_for_today():
                     filtered_tasks.append(task)
             except ValueError:
                 continue
-    
     return jsonify(filtered_tasks)
 
 # Routes for CRUD operations for categories
@@ -219,10 +215,6 @@ def get_priority(id):
 
 @app.route('/priorities/<id>', methods=['PUT'])
 def update_priority(id):
-    try:
-        ObjectId(id)
-    except InvalidId:
-        abort(400, description="Invalid priority ID format.")
     data = request.get_json()
     updated_priority = {
         'name': data['name']
@@ -235,10 +227,6 @@ def update_priority(id):
 
 @app.route('/priorities/<id>', methods=['DELETE'])
 def delete_priority(id):
-    try:
-        ObjectId(id)
-    except InvalidId:
-        abort(400, description="Invalid priority ID format.")
     result = priorities_collection.delete_one({'_id': ObjectId(id)})
     if result.deleted_count == 0:
         abort(404)
@@ -246,4 +234,3 @@ def delete_priority(id):
 
 if __name__ == '__main__':
     app.run(host = '127.0.0.1', port = 5001, debug = True)
-    app.run(host='127.0.0.1', port=5001, debug=True)
