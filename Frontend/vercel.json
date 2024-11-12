@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "../Backend/ndex.py",
+      "src": "../Backend/index.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "../Backend/ndex.py"
+      "dest": "../Backend/index.py"
     }
   ]
 }
