@@ -8,17 +8,19 @@ function InboxPage({ tasks, title }) {
   const getWeekDates = () => {
     const today = new Date();
     const weekDates = [];
-
+  
     for (let i = 0; i < 7; i++) {
       const nextDate = new Date(today);
       nextDate.setDate(today.getDate() + i);
+      // Normalize to midnight to avoid time zone issues
+      nextDate.setHours(0, 0, 0, 0);
       weekDates.push({
         date: nextDate.getDate(),
         fullDate: nextDate.toISOString().split('T')[0], // Add fullDate for accurate comparison
         day: nextDate.toLocaleString('default', { weekday: 'long' }),
       });
     }
-
+  
     return weekDates;
   };
 
